@@ -185,7 +185,7 @@ final class AnomalyEngine {
             lastJumpAlert[t.id] = e.time
             var a = Alert(kind: .positionJump, trackID: t.id, mmsi: t.mmsi, name: t.name, detectedAt: e.time,
                           position: t.lastAIS?.position ?? engine.latLon(of: t, at: e.time),
-                          detail: String(format: "Reported position moved %.1f km at an implied %.0f kn -- possible spoofing",
+                          detail: String(format: "Reported position moved %.1f km at an implied %.0f kn \u{2014} possible spoofing",
                                          j.distanceM / 1000, j.impliedKnots))
             a.resolvedAt = e.time
             alerts.append(a)
@@ -208,7 +208,7 @@ final class AnomalyEngine {
                     kinematicNormalRun[e.trackID] = 0
                     openAlert(aKey, Alert(kind: .kinematic, trackID: t.id, mmsi: t.mmsi, name: t.name,
                                           detectedAt: e.time, position: engine.latLon(of: t, at: e.time),
-                                          detail: String(format: "%@ residual %.1f\u{03C3} -- manoeuvre the motion model can't explain",
+                                          detail: String(format: "%@ residual %.1f\u{03C3} \u{2014} manoeuvre the motion model can't explain",
                                                          e.source == .ais ? "AIS" : "Radar", normalized)))
                 }
             } else {
