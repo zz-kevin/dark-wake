@@ -15,6 +15,16 @@ A vessel that switches its AIS off while the radar keeps tracking it is the
 maritime "went dark", and is the main thing this app is for. Ships do it to
 hide illegal fishing, sanctions-busting ship-to-ship transfers and smuggling.
 
+<p align="center">
+  <img src="docs/ipad.png" alt="Dark Wake on iPad: Dover Strait picture with two vessels flagged as gone dark" height="520">
+  &nbsp;
+  <img src="docs/iphone.png" alt="Dark Wake on iPhone: the same simulation on a phone layout" height="520">
+</p>
+<p align="center"><sub>Dover Strait simulation on iPad (A16) and iPhone 16 Pro. Blue arrows are
+vessels reporting AIS; red ones have gone dark while the South Foreland radar
+(green ring) still tracks them; yellow diamonds are radar contacts with no AIS
+at all.</sub></p>
+
 ## What it flags
 
 | Alert | Rule |
