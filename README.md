@@ -25,6 +25,13 @@ vessels reporting AIS; red ones have gone dark while the South Foreland radar
 (green ring) still tracks them; yellow diamonds are radar contacts with no AIS
 at all.</sub></p>
 
+<p align="center">
+  <img src="docs/running.gif" alt="Dark Wake running: ships move through the Dover Strait and two of them turn red as they go dark" width="480">
+</p>
+<p align="center"><sub>25 seconds at 60&times;, about 19 simulated minutes. It opens with every
+vessel on AIS; two of them switch AIS off partway through, are flagged red
+within about a minute of simulated time, and the alert count climbs from 1 to 4.</sub></p>
+
 ## What it flags
 
 | Alert | Rule |
