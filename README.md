@@ -63,7 +63,7 @@ plus scripted dark runs, rendezvous and AIS spoofing:
 
 | | Result |
 |---|---|
-| Went dark, radar-visible | 89/92 (96.7%) |
+| Went dark, radar-visible | 87/88 (98.9%) |
 | Median time to alert | 62–64 s |
 | False went-dark alarms | 0 of 174 vessels |
 | Dark rendezvous | 15/15 |
@@ -77,14 +77,33 @@ stopped. Second, rendezvous started at 1/15, because two hulls 150 m apart
 swap radar plots and their filter speeds jitter to 2–8 kn. "Stopped" is now
 judged from the pair's midpoint drift over the window.
 
+Five more dropouts started inside the 2 km edge band of their area, where
+went-dark is switched off by design (a vessel going quiet there looks the
+same as one leaving the feed's box). They are reported separately rather
+than scored as misses, the way Dark Track's harness only scores what the
+radar could reveal. The one real miss is a dark trawler that sat alongside
+the mothership right next to the radar, where the two hulls' plots mixed.
+
 These numbers come from this project's own simulator, so treat them as a
 regression baseline, not a claim about real traffic.
 
-**Live mode** was tested on a physical iPad (A16) on 2026-10-23. It
-connected to aisstream.io over the Singapore Strait and showed real ships,
-and an injected AIS dropout on a real vessel was flagged as went dark. That
-was one injection, so it shows the live path works end to end; it is not a
-detection rate.
+**Live mode** was first run on a physical iPad (A16) on 2026-10-23, over the
+Singapore Strait and New York Bight. It connected to aisstream.io and showed
+real ships, and it exposed two bugs the simulator couldn't, because real AIS
+arrives with irregular pauses and simulated AIS doesn't:
+
+- Harbour tugs, pilot boats and a Staten Island ferry were flagged "went
+  dark" after ordinary 60-second pauses in their AIS. The radar derived from
+  AIS kept seeing a ship for 40 s after its last report, and 40 s plus the
+  detector's 30 s radar recency exceeds the 60 s threshold. It now keeps
+  that view for 15 s.
+- Two dropouts injected in Upper New York Bay weren't flagged, because the
+  New York Bight area put the harbour inside the 2 km edge band. The area
+  now sits further north.
+
+Both are reproduced by tests in `LiveTrackerTests.swift`, which replay a
+real-style feed and failed before the fix. An injected dropout has not yet
+been re-tested on live data since then.
 
 ## Running it
 
@@ -110,6 +129,11 @@ Keychain.
   surface as *AIS gap (unconfirmed)*. The radar-confirmed path is tested
   with *Inject AIS dropout*, which hides a vessel's AIS from fusion while the
   radar keeps seeing it (the same approach as Dark Track's `inject.py`).
+- That radar only keeps a moving ship in view for 15 s after its last real
+  AIS report, and 15 s plus *Radar recency* has to stay under *Minimum AIS
+  silence*. With the defaults that's 45 s under 60 s. Settings that break it,
+  such as recency 50 s with silence 60 s, let ordinary AIS pauses look like
+  a ship going dark.
 - aisstream.io is terrestrial AIS, so coverage thins out offshore and quiet
   patches there are normal.
 - The simulator knows nothing about land, so in some areas vessels cross it.

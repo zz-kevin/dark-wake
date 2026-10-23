@@ -82,6 +82,9 @@ struct ScorecardView: View {
                     .foregroundStyle(.secondary)
             } else {
                 metric("Went dark (radar-visible)", ratio(card.confirmedDetected, card.radarVisible))
+                if card.edgeExcluded > 0 {
+                    metric("Not scored (at area edge)", "\(card.edgeExcluded)")
+                }
                 metric("Any dark/gap alert", ratio(card.anyDetected, card.scored))
                 if let m = card.medianLatencyS { metric("Median time to alert", fmt(m)) }
                 if simulation {

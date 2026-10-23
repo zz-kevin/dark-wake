@@ -8,6 +8,9 @@ struct DarkTruth: Identifiable {
     let start: Date
     var end: Date?
     let radarVisibleAtStart: Bool
+    /// Started inside the area's edge band, where went-dark is suppressed
+    /// by design (DetectorConfig.edgeMarginM), so it isn't scored as a miss.
+    var atEdgeAtStart = false
     let reason: Reason
 
     enum Reason: String { case evasive, rendezvous, injected }
@@ -264,6 +267,7 @@ final class VesselSimulator {
         v.darkUntil = duration.map { now.addingTimeInterval($0) }
         truth.append(DarkTruth(mmsi: m, name: v.name, start: now, end: nil,
                                radarVisibleAtStart: radar.canSee(position(of: v), targetHeightM: v.kind.radarHeightM),
+                               atEdgeAtStart: !region.contains(position(of: v), marginM: DetectorConfig().edgeMarginM),
                                reason: reason))
         v.truthIndex = truth.count - 1
     }

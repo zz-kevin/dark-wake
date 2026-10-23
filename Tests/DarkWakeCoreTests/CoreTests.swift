@@ -127,8 +127,8 @@ final class ScenarioTests: XCTestCase {
             let run = SimulationRun(region: region, start: Date(timeIntervalSince1970: 1_800_000_000), seed: UInt64(100 + i))
             for _ in 0..<(3 * 360) { run.step() }
             let s = run.scorecard()
-            print(String(format: "%@: scored %d, radar-visible %d, went-dark %d/%d, any %d/%d, rendezvous %d/%d, jumps %d/%d, false alarms %d (%d/%d vessels), median latency %.0f s",
-                         region.name, s.scored, s.radarVisible, s.confirmedDetected, s.radarVisible, s.anyDetected, s.scored,
+            print(String(format: "%@: scored %d, radar-visible %d, went-dark %d/%d (+%d at edge), any %d/%d, rendezvous %d/%d, jumps %d/%d, false alarms %d (%d/%d vessels), median latency %.0f s",
+                         region.name, s.scored, s.radarVisible, s.confirmedDetected, s.radarVisible, s.edgeExcluded, s.anyDetected, s.scored,
                          s.rendezvousDetected, s.rendezvousScored, s.jumpsDetected, s.jumpsInjected,
                          s.falseAlarms, s.falseAlarmVessels, s.aisVessels, s.medianLatencyS ?? -1))
             total.radarVisible += s.radarVisible

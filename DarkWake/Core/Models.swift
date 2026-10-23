@@ -117,7 +117,10 @@ struct Region: Identifiable, Hashable {
         Region(id: "singapore", name: "Singapore Strait", center: LatLon(lat: 1.18, lon: 103.90),
                radarSite: LatLon(lat: 1.16, lon: 103.74), radarName: "Raffles Lighthouse",
                laneBearingDeg: 75, halfSpanLatDeg: 0.25),
-        Region(id: "nyc", name: "New York Bight", center: LatLon(lat: 40.38, lon: -73.80),
+        // Centred far enough north that Upper New York Bay and Newark Bay
+        // sit inside the area rather than in its 2 km edge band, where
+        // went-dark is suppressed.
+        Region(id: "nyc", name: "New York Bight", center: LatLon(lat: 40.50, lon: -73.95),
                radarSite: LatLon(lat: 40.46, lon: -74.00), radarName: "Sandy Hook",
                laneBearingDeg: 115, halfSpanLatDeg: 0.3),
     ]
