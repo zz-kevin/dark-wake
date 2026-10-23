@@ -81,9 +81,10 @@ These numbers come from this project's own simulator, so treat them as a
 regression baseline, not a claim about real traffic.
 
 **Live mode** was tested on a physical iPad (A16) on 2026-10-23. It
-connected to aisstream.io and showed real ships, and an injected AIS
-dropout on a real vessel was flagged as went dark. That was one injection,
-so it shows the live path works end to end; it is not a detection rate.
+connected to aisstream.io over the Singapore Strait and showed real ships,
+and an injected AIS dropout on a real vessel was flagged as went dark. That
+was one injection, so it shows the live path works end to end; it is not a
+detection rate.
 
 ## Running it
 
