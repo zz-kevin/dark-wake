@@ -63,6 +63,7 @@ final class SimulationRun {
 /// habit from Dark Track's anomaly/harness.py.
 struct Scorecard {
     var scored = 0              // dark episodes long enough to judge
+    var pending = 0             // still running and too young to judge yet
     var radarVisible = 0        // ...that started inside radar cover, away from the area edge
     var edgeExcluded = 0        // radar-visible but started in the edge band: not scored
     var confirmedDetected = 0   // radar-visible episodes flagged "went dark"
@@ -88,7 +89,10 @@ struct Scorecard {
         let darkAlerts = alerts.filter { $0.kind == .wentDark || $0.kind == .aisGap }
         for e in truth {
             let end = e.end ?? now
-            guard end.timeIntervalSince(e.start) >= Self.minDurationS else { continue }
+            guard end.timeIntervalSince(e.start) >= Self.minDurationS else {
+                if e.end == nil { pending += 1 }
+                continue
+            }
             scored += 1
             let hits = darkAlerts.filter {
                 $0.mmsi == e.mmsi && $0.detectedAt >= e.start && $0.detectedAt <= end.addingTimeInterval(Self.slackS)

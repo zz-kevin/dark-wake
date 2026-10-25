@@ -102,8 +102,13 @@ arrives with irregular pauses and simulated AIS doesn't:
   now sits further north.
 
 Both are reproduced by tests in `LiveTrackerTests.swift`, which replay a
-real-style feed and failed before the fix. An injected dropout has not yet
-been re-tested on live data since then.
+real-style feed and failed before the fix.
+
+Re-tested live after the fix on 2026-10-24 over the Dover Strait: a dropout
+injected on a vessel under way at about 10 kn was flagged as went dark
+53 s after injection (1/1), with no false alarms during the session. That
+was one injection on a quiet late-night feed, so it shows the live path now
+works end to end; it is not a detection or false-alarm rate.
 
 ## Running it
 

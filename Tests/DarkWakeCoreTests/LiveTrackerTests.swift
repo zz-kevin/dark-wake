@@ -71,6 +71,16 @@ final class LiveTrackerTests: XCTestCase {
         if let m = s.medianLatencyS { XCTAssertLessThanOrEqual(m, 90) }
     }
 
+    /// The first live re-test showed an empty scorecard for the first 150 s
+    /// after injecting; it should say a dropout is in progress instead.
+    func testInjectionInProgressIsReportedAsPending() {
+        let v = Vessel(mmsi: 368_253_891, start: lowerBay, sog: 8, cog: 30, interval: 10)
+        let live = replay([v], seconds: 240, inject: [(v.mmsi, 180)])
+        let s = live.scorecard(now: t0.addingTimeInterval(240))
+        XCTAssertEqual(s.scored, 0)
+        XCTAssertEqual(s.pending, 1)
+    }
+
     func testInjectedDropoutOnClassBVesselIsFlagged() {
         // Class B under way: a report every 30 s.
         let v = Vessel(mmsi: 338_000_001, start: lowerBay, sog: 7, cog: 120, interval: 30)

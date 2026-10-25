@@ -74,7 +74,11 @@ struct ScorecardView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            if card.scored == 0 {
+            if card.scored == 0 && card.pending > 0 {
+                Text("\(card.pending) dropout\(card.pending == 1 ? "" : "s") in progress \u{2014} scored once \(card.pending == 1 ? "it has" : "each has") run \(Int(Scorecard.minDurationS)) s.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } else if card.scored == 0 {
                 Text(simulation
                      ? "Waiting for the first scripted dropout to run long enough to score\u{2026}"
                      : "Select a vessel on the map and inject an AIS dropout to test detection against the live picture.")
