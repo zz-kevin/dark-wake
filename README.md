@@ -16,10 +16,10 @@ maritime "went dark", and is the main thing this app is for. Ships do it to
 hide illegal fishing, sanctions-busting ship-to-ship transfers and smuggling.
 
 <p align="center">
-  <img src="docs/live.gif" alt="Dark Wake in live mode over the Singapore Strait: a container ship's AIS is cut and it turns red as went dark while radar keeps tracking it" width="800">
+  <img src="docs/live.gif" alt="Dark Wake in live mode over the Singapore Strait: a ship's AIS is cut and it turns red as went dark while radar keeps tracking it" width="800">
 </p>
 <p align="center"><sub>Live AIS over the Singapore Strait on a real iPad (A16), 95 seconds sped up
-4&times;. An AIS dropout is injected on MAERSK KARACHI, a container ship doing
+4&times;. An AIS dropout is injected on MAERSK KARACHI, under way at
 about 7 kn, and it turns red once its AIS has been silent 61 s while the radar
 still tracks it.</sub></p>
 
