@@ -16,6 +16,16 @@ maritime "went dark", and is the main thing this app is for. Ships do it to
 hide illegal fishing, sanctions-busting ship-to-ship transfers and smuggling.
 
 <p align="center">
+  <img src="docs/live.gif" alt="Dark Wake in live mode over the Singapore Strait: a pilot boat's AIS is cut and it turns red as went dark while radar keeps tracking it" width="800">
+</p>
+<p align="center"><sub>Live AIS over the Singapore Strait on a real iPad (A16), 89 seconds sped up
+4&times;. An AIS dropout is injected on PILOT GP54, a pilot boat doing 24 kn,
+and it turns red once its AIS has been silent 62 s while the radar still
+tracks it. Orange markers are real ships whose AIS went quiet outside radar
+cover (unconfirmed gaps); the large ring is how far one of them could have
+moved since.</sub></p>
+
+<p align="center">
   <img src="docs/ipad.png" alt="Dark Wake on iPad: Dover Strait picture with two vessels flagged as gone dark" height="520">
   &nbsp;
   <img src="docs/iphone.png" alt="Dark Wake on iPhone: the same simulation on a phone layout" height="520">
@@ -28,7 +38,7 @@ at all.</sub></p>
 <p align="center">
   <img src="docs/running.gif" alt="Dark Wake running: ships move through the Dover Strait and two of them turn red as they go dark" width="480">
 </p>
-<p align="center"><sub>25 seconds at 60&times;, about 19 simulated minutes. It opens with every
+<p align="center"><sub>Simulation: 25 seconds at 60&times;, about 19 simulated minutes. It opens with every
 vessel on AIS; two of them switch AIS off partway through, are flagged red
 within about a minute of simulated time, and the alert count climbs from 1 to 4.</sub></p>
 
