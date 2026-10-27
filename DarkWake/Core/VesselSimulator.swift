@@ -11,6 +11,19 @@ struct DarkTruth: Identifiable {
     /// Started inside the area's edge band, where went-dark is suppressed
     /// by design (DetectorConfig.edgeMarginM), so it isn't scored as a miss.
     var atEdgeAtStart = false
+    /// Live injections only: radar sweeps while the injection ran, and how
+    /// many of them had data on the vessel. The
+    /// simulator always knows where its vessels are, so it leaves these nil.
+    var radarSweeps: Int?
+    var radarSweepsWithData: Int?
+
+    /// Whether the radar could have revealed the dropout: data on the vessel
+    /// for at least half the sweeps -- the same bar the went-dark detector
+    /// sets for corroboration. nil for simulated episodes (always observable).
+    var radarCouldObserve: Bool {
+        guard let n = radarSweeps, let k = radarSweepsWithData, n > 0 else { return true }
+        return Double(k) >= 0.5 * Double(n)
+    }
     let reason: Reason
 
     enum Reason: String { case evasive, rendezvous, injected }

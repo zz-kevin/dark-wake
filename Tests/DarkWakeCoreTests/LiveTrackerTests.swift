@@ -81,6 +81,32 @@ final class LiveTrackerTests: XCTestCase {
         XCTAssertEqual(s.pending, 1)
     }
 
+    /// Second live recording (Dover Strait, late night): the feed was so
+    /// sparse that an injected ship's real reports came every minute or two,
+    /// so the AIS-derived radar barely saw it and the detector rightly held
+    /// off. That says nothing about detection, so it isn't scored as a miss.
+    func testInjectionRadarCouldNotSeeIsNotScoredAsMiss() {
+        // Reports every 150 s: the radar's 60 s view of an injected ship
+        // covers 40% of sweeps, under the detector's half-the-sweeps bar.
+        let v = Vessel(mmsi: 257_711_000, start: lowerBay, sog: 8.6, cog: 62, interval: 150)
+        let live = replay([v], seconds: 600, inject: [(v.mmsi, 200)])
+        let s = live.scorecard(now: t0.addingTimeInterval(600))
+        XCTAssertEqual(s.radarUnobservable, 1)
+        XCTAssertEqual(s.scored, 0)
+        XCTAssertEqual(s.radarVisible, 0)
+        XCTAssertNil(s.confirmedRecall)
+    }
+
+    /// Reports every 90 s still leave the radar data on two sweeps in three,
+    /// so that injection must be scored -- and caught.
+    func testSparseButFollowableInjectionIsStillScored() {
+        let v = Vessel(mmsi: 257_711_001, start: lowerBay, sog: 8.6, cog: 62, interval: 90)
+        let live = replay([v], seconds: 600, inject: [(v.mmsi, 200)])
+        let s = live.scorecard(now: t0.addingTimeInterval(600))
+        XCTAssertEqual(s.radarUnobservable, 0)
+        XCTAssertEqual(s.confirmedDetected, 1)
+    }
+
     func testInjectedDropoutOnClassBVesselIsFlagged() {
         // Class B under way: a report every 30 s.
         let v = Vessel(mmsi: 338_000_001, start: lowerBay, sog: 7, cog: 120, interval: 30)

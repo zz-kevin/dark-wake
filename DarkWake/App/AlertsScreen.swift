@@ -74,17 +74,26 @@ struct ScorecardView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            if card.scored == 0 && card.pending > 0 {
+            if card.pending > 0 {
                 Text("\(card.pending) dropout\(card.pending == 1 ? "" : "s") in progress \u{2014} scored once \(card.pending == 1 ? "it has" : "each has") run \(Int(Scorecard.minDurationS)) s.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
-            } else if card.scored == 0 {
+            }
+            if card.radarUnobservable > 0 {
+                metric("Not scored (radar had too little data)", "\(card.radarUnobservable)")
+                if card.scored == 0 {
+                    Text("This ship's real AIS reports were too infrequent for the radar to follow it. Pick one whose Last AIS stays at a few seconds.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            if card.scored == 0 && card.pending == 0 && card.radarUnobservable == 0 {
                 Text(simulation
                      ? "Waiting for the first scripted dropout to run long enough to score\u{2026}"
                      : "Select a vessel on the map and inject an AIS dropout to test detection against the live picture.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
-            } else {
+            } else if card.scored > 0 {
                 metric("Went dark (radar-visible)", ratio(card.confirmedDetected, card.radarVisible))
                 if card.edgeExcluded > 0 {
                     metric("Not scored (at area edge)", "\(card.edgeExcluded)")

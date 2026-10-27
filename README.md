@@ -120,6 +120,14 @@ injected on a vessel under way at about 10 kn was flagged as went dark
 was one injection on a quiet late-night feed, so it shows the live path now
 works end to end; it is not a detection or false-alarm rate.
 
+A later Dover Strait recording on a very thin feed (36 messages in 2½ minutes
+for 22 ships) injected a dropout on a ship whose real reports arrived only
+every minute or two. The AIS-derived radar barely saw it, so the detector
+rightly held off. That says nothing about detection, so injected dropouts are
+now scored only if the radar had data on the ship for at least half the
+sweeps while the injection ran (the same bar the detector sets). The rest are
+listed in the app as "Not scored (radar had too little data)".
+
 ## Running it
 
 **Tests** (no simulator needed):

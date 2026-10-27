@@ -66,6 +66,7 @@ struct Scorecard {
     var pending = 0             // still running and too young to judge yet
     var radarVisible = 0        // ...that started inside radar cover, away from the area edge
     var edgeExcluded = 0        // radar-visible but started in the edge band: not scored
+    var radarUnobservable = 0   // live injections the radar had too little data to see: not scored
     var confirmedDetected = 0   // radar-visible episodes flagged "went dark"
     var anyDetected = 0         // all scored episodes flagged went dark or AIS gap
     var rendezvousScored = 0
@@ -91,6 +92,10 @@ struct Scorecard {
             let end = e.end ?? now
             guard end.timeIntervalSince(e.start) >= Self.minDurationS else {
                 if e.end == nil { pending += 1 }
+                continue
+            }
+            guard e.radarCouldObserve else {
+                radarUnobservable += 1
                 continue
             }
             scored += 1

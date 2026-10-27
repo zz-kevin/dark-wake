@@ -56,7 +56,23 @@ final class LiveTracker {
         if sweepDue { nextSweep = now.addingTimeInterval(pipeline.radar.sweepPeriodS) }
         let reports = buffer
         buffer.removeAll()
-        return pipeline.cycle(ais: reports, radarTargets: sweepDue ? radarTargets(now: now) : nil, now: now)
+        let targets = sweepDue ? radarTargets(now: now) : nil
+        if let targets { noteRadarData(targets, now: now) }
+        return pipeline.cycle(ais: reports, radarTargets: targets, now: now)
+    }
+
+    /// For each live injection, count sweeps while it runs and those with
+    /// radar data on the vessel (inside coverage), so a dropout on a feed too
+    /// sparse for the radar to follow isn't scored as a detection miss. Over
+    /// the whole injection, not just its start: with reports every couple of
+    /// minutes, a short window's ratio depends on when Inject was tapped.
+    private func noteRadarData(_ targets: [CoastalRadar.Target], now: Date) {
+        let seen = Dictionary(targets.map { ($0.id, $0) }, uniquingKeysWith: { a, _ in a })
+        for (mmsi, inj) in injected {
+            truth[inj.truthIndex].radarSweeps = (truth[inj.truthIndex].radarSweeps ?? 0) + 1
+            let visible = seen[String(mmsi)].map { pipeline.radar.canSee($0.position, targetHeightM: $0.heightM) } ?? false
+            truth[inj.truthIndex].radarSweepsWithData = (truth[inj.truthIndex].radarSweepsWithData ?? 0) + (visible ? 1 : 0)
+        }
     }
 
     /// Where the radar "sees" vessels: each one's latest real report,

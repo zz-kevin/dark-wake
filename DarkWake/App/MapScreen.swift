@@ -26,7 +26,10 @@ struct MapScreen: View {
                         .stroke(pin.status.color.opacity(pin.status == .ais ? 0.8 : 0.6), lineWidth: 2)
                 }
                 if pin.status == .dark || pin.status == .gap || pin.status == .radarOnly {
-                    MapCircle(center: pin.coordinate, radius: max(2 * pin.positionStdM, 60))
+                    // Capped: a vessel quiet for many minutes has an uncertainty
+                    // that grows without bound, and an uncapped ring covered
+                    // most of Singapore in the first live recording.
+                    MapCircle(center: pin.coordinate, radius: min(max(2 * pin.positionStdM, 60), 5_000))
                         .foregroundStyle(pin.status.color.opacity(0.12))
                         .stroke(pin.status.color.opacity(0.5), lineWidth: 1)
                 }
