@@ -12,7 +12,7 @@ they don't want to be seen:
   sooner than ships, detection probability that falls with range, sea clutter.
 
 A vessel that switches its AIS off while the radar keeps tracking it is the
-maritime "went dark", and is the main thing this app is for. Ships do it to
+maritime "went dark" and is the main thing this app is for. Ships do it to
 hide illegal fishing, sanctions-busting ship-to-ship transfers and smuggling.
 
 <p align="center">
@@ -100,14 +100,14 @@ Singapore Strait and New York Bight. It connected to aisstream.io and showed
 real ships, and it exposed two bugs the simulator couldn't, because real AIS
 arrives with irregular pauses and simulated AIS doesn't:
 
-- Harbour tugs, pilot boats and a Staten Island ferry were flagged "went
+- Harbor tugs, pilot boats and a Staten Island ferry were flagged "went
   dark" after ordinary 60-second pauses in their AIS. The radar derived from
   AIS kept seeing a ship for 40 s after its last report, and 40 s plus the
   detector's 30 s radar recency exceeds the 60 s threshold. It now keeps
   that view for 15 s.
 - Two dropouts injected in Upper New York Bay weren't flagged, because the
-  New York Bight area put the harbour inside the 2 km edge band. The area
-  now sits further north.
+  New York Bight area put the harbor inside the 2 km edge band. The area
+  now sits farther north.
 
 Both are reproduced by tests in `LiveTrackerTests.swift`, which replay a
 real-style feed and failed before the fix.
@@ -158,7 +158,7 @@ Keychain.
 - aisstream.io is terrestrial AIS, so coverage thins out offshore and quiet
   patches there are normal.
 - The simulator knows nothing about land, so in some areas vessels cross it.
-- Constant-velocity filter only (no IMM). Ships manoeuvre gently enough that
+- Constant-velocity filter only (no IMM). Ships maneuver gently enough that
   this hasn't been a problem in simulation.
 - Equirectangular local projection: fine across one radar's ~50 km
   coverage, not across an ocean.
